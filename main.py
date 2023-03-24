@@ -37,7 +37,34 @@ print(df2)
 # Storing the all values of 56th column in y array
 y = df2.iloc[:, 55].values
 
-# providing the summary of descriptive statistics count, mean, standard deviation, minimum and maximum values,
-# as well as the 25th, 50th, and 75th percentiles of the data
+# providing the summary of descriptive statistics count, mean, standard deviation, minimum and maximum values,as well as the 25th, 50th, and 75th percentiles of the data
 df2_description = df2.describe()
 print(df2_description)
+
+# standardizing the features by removing the mean and scaling to unit variance
+scaler = StandardScaler()
+# applying standardscaler to the database
+scaled_data = scaler.fit_transform(df2)
+
+# creating new dataframe using the data from df2
+df3 = pd.DataFrame(data=scaled_data, columns=df2.columns)
+print(df3)
+
+# providing the summary of descriptive statistics
+df3_description = df3.describe()
+print(df3_description)
+
+# applying Principal Component Analysis(PCA)
+pca = PCA()
+# fitting to the dataframe
+pca_fit = pca.fit_transform(df3)
+
+# plotting the graph
+plt.figure()
+plt.plot(np.cumsum(pca.explained_variance_ratio_))
+plt.title('Explained Variance Ratio')
+plt.xlabel('Number Of Components')
+plt.ylabel('Variance Ratio')
+plt.show()
+
+
