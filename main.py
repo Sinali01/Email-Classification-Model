@@ -59,7 +59,7 @@ pca = PCA()
 # fitting to the dataframe
 pca_fit = pca.fit_transform(df3)
 
-# plotting the graph
+# plotting the PCA
 plt.figure()
 plt.plot(np.cumsum(pca.explained_variance_ratio_))
 plt.title('Explained Variance Ratio')
@@ -67,4 +67,34 @@ plt.xlabel('Number Of Components')
 plt.ylabel('Variance Ratio')
 plt.show()
 
+# transforming the original features of the dataset to a new set of features
+pca = PCA(n_components=45)
+new_data = pca.fit_transform(df3)
 
+# assigning new data to a new dataframe to use for the algorithm
+df_afterPCA = pd.DataFrame(data=new_data)
+print(df_afterPCA)
+
+# setting the random seed to 1
+rng = np.random.default_rng(seed=1)
+
+# creating an array y, multiplying two matrices and converting it to transpose array
+y = np.dot(np.random.random(size=(45, 45)), np.random.normal(size=(45, 4208))).T
+
+# plotting the values of first two principal components in a scatter plot
+plt.plot(y[:, 0], y[:, 1], 'o')
+# ensuring that x and y axes have equal scales
+plt.axis('equal')
+plt.show()
+
+# assigning y into a new dataframe new_y
+new_y = pd.DataFrame(y)
+print(new_y)
+
+# PCA model will hold 45 components which can be transformed the original data into a lower-dimensional space
+pca = PCA(n_components=45)
+pca.fit(y)
+# getting the variance explained by each component
+print(pca.explained_variance_)
+# returning the principal axes in feature space
+print(pca.components_)
