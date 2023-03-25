@@ -168,22 +168,29 @@ print("The accuracy when using K-nearest neighbor algorithm --> ", KNN_Classifie
 print()
 
 # making predictions on the test set 'X_test_KNN'
-y_prediction = KNN_Classifier.predict(X_test_KNN)
+KNN_prediction = KNN_Classifier.predict(X_test_KNN)
 
 # evaluating the accuracy of the classification using confusion matrix
 from sklearn.metrics import confusion_matrix
-conf_mat = confusion_matrix(y_test_KNN, y_prediction)
+conf_mat = confusion_matrix(y_test_KNN, KNN_prediction)
 print(conf_mat)
 print()
 
-# creating the heatmap of the confusion matrix
+# creating the heatmap of the confusion matrix of KNN
 import matplotlib.pyplot as plt
 import seaborn as sb
 plt.figure(figsize=(7,5))
 sb.heatmap(conf_mat, annot=True, cmap='Oranges')  # The darker shades of orange represent higher values in the matrix and lighter shades represent lower values
 plt.xlabel('Predicted')
 plt.ylabel('Truth')
+plt.title('Confusion Matrix of the classification when using KNN algorithm')
 plt.show()
+
+from sklearn.metrics import classification_report
+# printing the classification report when using KNN
+print('Classification report when using KNN')
+print(classification_report(y_test_KNN, KNN_prediction))
+print()
 
 # applying decision tree algorithm
 from sklearn.tree import DecisionTreeClassifier
@@ -200,6 +207,24 @@ DT_Classifier.fit(X_train_DT, y_train_DT)
 
 # predicting and storing the values in variable 'DT_prediction'
 DT_prediction = DT_Classifier.predict(X_test_DT)
+
+# evaluating the accuracy of the classification using confusion matrix
+from sklearn.metrics import confusion_matrix
+conf_mat = confusion_matrix(y_test_DT, DT_prediction)
+
+# creating the heatmap of the confusion matrix of Decision Tree
+import seaborn as sb
+sb.heatmap(conf_mat, annot=True, cmap='Oranges')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix of the classification when using Decision Tree algorithm')
+plt.show()
+
+from sklearn.metrics import classification_report
+# printing the classification report when using Decision Tree
+print('Classification report when using Decision Tree')
+print(classification_report(y_test_DT, DT_prediction))
+print()
 
 from sklearn import metrics
 print("The accuracy when using decision tree algorithm --> ", metrics.accuracy_score(y_test_DT, DT_prediction))
