@@ -36,7 +36,7 @@ print()
 print(df2.duplicated())
 print()
 
-# dropping the duplicates which says 'True'
+# dropping the duplicates (which says 'True')
 df2.drop_duplicates(inplace=True)
 print(df2)
 print()
@@ -152,3 +152,54 @@ print()
 df4 = pd.DataFrame(y_fit_tran)
 print(df4)
 print()
+
+# splitting the dataset into training and testing subsets
+from sklearn.model_selection import train_test_split
+X_train_KNN, X_test_KNN, y_train_KNN, y_test_KNN = train_test_split(y_fit_tran, x, test_size=0.25, random_state=0)
+
+# predicting the class of a test sample using KNN
+from sklearn.neighbors import KNeighborsClassifier
+# creating an object with 5 neighbors and p=2 euclidean distance
+KNN_Classifier = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
+KNN_Classifier = KNN_Classifier.fit(X_train_KNN, y_train_KNN)
+
+# getting the accuracy of test data
+print("The accuracy when using K-nearest neighbor algorithm --> ", KNN_Classifier.score(X_test_KNN, y_test_KNN))
+print()
+
+# making predictions on the test set 'X_test_KNN'
+y_prediction = KNN_Classifier.predict(X_test_KNN)
+
+# evaluating the accuracy of the classification using confusion matrix
+from sklearn.metrics import confusion_matrix
+conf_mat = confusion_matrix(y_test_KNN, y_prediction)
+print(conf_mat)
+print()
+
+# creating the heatmap of the confusion matrix
+import matplotlib.pyplot as plt
+import seaborn as sb
+plt.figure(figsize=(7,5))
+sb.heatmap(conf_mat, annot=True, cmap='Oranges')  # The darker shades of orange represent higher values in the matrix and lighter shades represent lower values
+plt.xlabel('Predicted')
+plt.ylabel('Truth')
+plt.show()
+
+# applying decision tree algorithm
+from sklearn.tree import DecisionTreeClassifier
+
+# splitting the dataset into training and testing subsets
+from sklearn.model_selection import train_test_split
+X_train_DT, X_test_DT, y_train_DT, y_test_DT = train_test_split(y_fit_tran, x, test_size=0.3, random_state=3)
+
+# creating an instance, measuring the quality of splits and maximum number of levels of the tree is 4
+DT_Classifier = DecisionTreeClassifier(criterion="entropy", max_depth=4)
+
+# fitting the decision tree classifier to the training data
+DT_Classifier.fit(X_train_DT, y_train_DT)
+
+# predicting and storing the values in variable 'DT_prediction'
+DT_prediction = DT_Classifier.predict(X_test_DT)
+
+from sklearn import metrics
+print("The accuracy when using decision tree algorithm --> ", metrics.accuracy_score(y_test_DT, DT_prediction))
